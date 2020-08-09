@@ -14,6 +14,9 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+// Google 
+//--------------------------------------------------
+
 // auth with google
 router.get('/google', passport.authenticate('google', {
     scope: ['profile']
@@ -26,6 +29,18 @@ router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
     console.log('req:', req.user);
     res.redirect('/profile');
 });
+
+
+// Facebook 
+//--------------------------------------------------
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get('/facebook/redirect', passport.authenticate('facebook'), (req, res) => {
+    //res.send(req.user);
+    console.log('req:', req.user);
+    res.redirect('/profile');
+});
+
 
 module.exports = router;
 
