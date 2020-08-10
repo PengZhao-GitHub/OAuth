@@ -14,6 +14,12 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+
+//************************************** */
+// Step #3 use passport in routes
+//************************************** */
+
+
 // Google 
 //--------------------------------------------------
 
@@ -41,6 +47,15 @@ router.get('/facebook/redirect', passport.authenticate('facebook'), (req, res) =
     res.redirect('/profile');
 });
 
+// Twitter 
+//--------------------------------------------------
+router.get('/twitter', passport.authenticate('twitter'));
+
+router.get('/twitter/redirect', passport.authenticate('twitter'), (req, res) => {
+    //res.send(req.user);
+    console.log('req:', req.user);
+    res.redirect('/profile');
+});
 
 module.exports = router;
 
