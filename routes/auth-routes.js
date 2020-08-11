@@ -4,9 +4,10 @@ const passport = require('passport');
 // Call back URL
 const CustomerPortalBackURL = 'http://localhost:4200/profile/';
 
+
 // auth login
-router.get('/login', (req, res) => {
-    res.render('login', {user: req.user});
+router.get('/login-index', (req, res) => {
+    res.render('login-index', {user: req.user});
 });
 
 // auth logout

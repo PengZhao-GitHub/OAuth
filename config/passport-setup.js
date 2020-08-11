@@ -1,7 +1,12 @@
 const passport = require('passport');
+
 const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
 const TwitterStrategy = require('passport-twitter');
+const localStrategy = require('passport-local').Strategy;
+
+const bcrypt = require('bcryptjs');
+
 const keys = require('./keys');
 const User = require('../models/user-model');
 
@@ -134,4 +139,29 @@ passport.use(
 );
 
 
+// Local strategy
+//------------------
+passport.use(
+    new localStrategy({ usernameField: 'email' }, (email, password, done) => {
+        // Match user
+        User.findOne({ email: email })
+            .then(user => {
+                if (!user) {
+                    return done(null, false, { message: 'That email is not registered' });
+                }
 
+                // Match password
+                bcrypt.compare(password, user.password, (err, isMatch) => {
+                    if (err) throw err;
+                    if (isMatch) {
+                        console.log('Local strategy', user);
+                        return done(null, user);
+                    } else {
+                        console.log("login error");
+                        return done(null, false, { message: 'Password incorrect' })
+                    }
+                });
+            })
+            .catch(err => console.log(err));
+    })
+);
