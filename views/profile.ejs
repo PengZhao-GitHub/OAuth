@@ -9,8 +9,8 @@
                 margin: 0;
             }
             nav{
-                background: #ff5353;
-                padding: 20px 10px;
+                background: rgba(0, 163, 231,1);
+                padding: 10px 10px;
             }
             nav ul{
                 max-width: 960px;
@@ -55,17 +55,16 @@
                 <% } else { %>    
                     <li><a href="/auth/login">Login</a></li>
                 <% } %>
-                <li><a href="/">Homepage</a></li>
                 <li><a href="/profile">Profile</a></li>
             </ul>
         </nav>
         <header>
-            <h1>Welcome to your profile, <%= user.username %></h1>
+            <h1><%= user.username %>'s profile</h1>
         </header>
         <main>
             <p>
                 <img src="<%= user.thumbnail %>" alt="">
-                extra information about you. 
+                extra information about the cusotmer: To be extended 
             </p>
         </main>
     </body>

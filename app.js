@@ -23,7 +23,6 @@ app.use(cors());
 
 //  Bodyparser to handle form data
 app.use(express.urlencoded( { extended: false}));
-
 app.use(express.json());
 
 // Set up view eninge
@@ -52,9 +51,12 @@ app.use((req, res, next) => {
 } )
 
 // connect to mongodb
-mongoose.connect(keys.mongodb.dbURI, () => {
+/*mongoose.connect(keys.mongodb.dbURI, () => {
     console.log('Connected to mongodb');
-});
+});*/
+mongoose.connect(keys.mongodb.dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.log(err));
 
 // set up routes
 app.use('/auth', authRoutes);
@@ -67,7 +69,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log('App now listening for requests on port 3000');
+    console.log('OAuth service now listening for requests on port 3000');
 });
 
 

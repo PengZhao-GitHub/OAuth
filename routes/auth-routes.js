@@ -1,11 +1,13 @@
 const router = require('express').Router();
 const passport = require('passport');
+const CallbackURL = require('../config/sys-config');
 
 // Call back URL
-const CustomerPortalBackURL = 'http://localhost:4200/profile/';
-
+//const CustomerPortalBackURL = 'http://localhost:4200/profile/';
+const CustomerPortalBackURL = CallbackURL.DevMode ? CallbackURL.log_in_out_callBackUrl.DevMode : CallbackURL.log_in_out_callBackUrl.ServiceMode;
 
 // auth login
+// Used for internal 
 router.get('/login-index', (req, res) => {
     res.render('login-index', {user: req.user});
 });
@@ -14,14 +16,17 @@ router.get('/login-index', (req, res) => {
 router.get('/logout', (req, res) => {
     // handle with passport
     //res.send('logging out');
+    console.log("logout", req);
     req.logout();
     //res.redirect('/');
-    res.redirect(CustomerPortalBackURL + null);
+    console.log('redirectURL', CustomerPortalBackURL);
+    res.redirect(CustomerPortalBackURL);
+    
 });
 
 
 //************************************** */
-// Step #3 use passport in routes
+// Step #3 use passport in routes        */
 //************************************** */
 
 
@@ -33,24 +38,17 @@ router.get('/google', passport.authenticate('google', {
     scope: ['profile']
 }));
 
-// callback route for google to redirect to 
-// passport.authenticate('google') to use the code returned from google to fire the callback funciton
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-    //res.send(req.user);
-    console.log('req:', req.user);
-    //res.redirect('/profile');
+router.get('/google/redirect', passport.authenticate('google'), (req, res) => { // callback route for google to redirect to // passport.authenticate('google') to use the code returned from google to fire the callback funciton
+    console.log('/google/redirect:', req.user);
     res.redirect(CustomerPortalBackURL + req.user.id);
 });
-
 
 // Facebook 
 //--------------------------------------------------
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/redirect', passport.authenticate('facebook'), (req, res) => {
-    //res.send(req.user);
-    console.log('req:', req.user);
-    //res.redirect('/profile');
+    console.log('/facebook/redirect:', req.user);
     res.redirect(CustomerPortalBackURL + req.user.id);
 });
 
@@ -59,9 +57,7 @@ router.get('/facebook/redirect', passport.authenticate('facebook'), (req, res) =
 router.get('/twitter', passport.authenticate('twitter'));
 
 router.get('/twitter/redirect', passport.authenticate('twitter'), (req, res) => {
-    //res.send(req.user);
-    console.log('req:', req.user);
-    //res.redirect('/profile');
+    console.log('/twitter/redirect:', req.user);
     res.redirect(CustomerPortalBackURL + req.user.id);
 });
 

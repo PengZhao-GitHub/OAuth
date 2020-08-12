@@ -3,17 +3,21 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
+const CallbackURL = require('../config/sys-config');
+
 // User model
 const User = require('../models/user-model');
 
 // Call back URL
-const CustomerPortalBackURL = 'http://localhost:4200/profile/';  //follow-up: Consolidate into one variable
+//const CustomerPortalBackURL = 'http://localhost:4200/profile/';  //follow-up: Consolidate into one variable
+const CustomerPortalBackURL = CallbackURL.DevMode ? CallbackURL.log_in_out_callBackUrl.DevMode : CallbackURL.log_in_out_callBackUrl.ServiceMode;
 
 // Login Page
 //router.get('/login', (req, res) => res.render('./local/login'));
 // req.isAuthenticated()
 router.get('/login', (req, res) => {
     if (req.isAuthenticated()) {
+        console.log(req.isAuthenticated());
         console.log('customer has logged in already', req.user);
         res.redirect('/local/redirect');
     } else {
@@ -98,15 +102,6 @@ router.post('/register', (req, res) => {
 });
 
 // Login handle
-/*
-router.post('/login', (req, res, next) => {
-    console.log('/login handle',req.user);
-    passport.authenticate('local', {
-        successRedirect: '/local/dashboard',
-        failureRedirect: '/local/login',
-        failureFlash: true //enable use flash to see the error message;
-    })(req, res, next);
-});*/
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/local/redirect',
@@ -124,14 +119,9 @@ router.get('/logout', (req, res) => {
 })
 
 
-//Dashboard
-//router.get('/dashboard', ensureAuthenticated, (req, res) => res.render('dashboard', {
-/*router.get('/dashboard', (req, res) => res.render('./local/dashboard', {
-    username: req.user.username
-}));*/
-
 // Call back to customer portal
 router.get('/redirect', (req, res) => {
+    console.log('/local/redirect', req.user);
     res.redirect(CustomerPortalBackURL + req.user.id);
 });
 

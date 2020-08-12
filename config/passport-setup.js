@@ -1,3 +1,12 @@
+//************************************** */
+// Passport strategies:
+// - Google
+// - Facebook
+// - Twitter
+// - Local strategy
+//************************************** */
+
+
 const passport = require('passport');
 
 const GoogleStrategy = require('passport-google-oauth20');
@@ -12,13 +21,13 @@ const User = require('../models/user-model');
 
 passport.serializeUser((user, done) => {
     //mongodb id: _id, but you can use it just as id
-    console.log('serialize:', user);
+    console.log('serialize', user.id);
     done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
     User.findById(id).then((user) => {
-        console.log('diserializeUser:', user);
+        console.log('deserialize', user);
         done(null, user); //add user to req ???
     });
 });
