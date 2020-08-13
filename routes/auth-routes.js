@@ -16,7 +16,7 @@ router.get('/login-index', (req, res) => {
 router.get('/logout', (req, res) => {
     // handle with passport
     //res.send('logging out');
-    console.log("logout", req);
+    
     req.logout();
     //res.redirect('/');
     console.log('redirectURL', CustomerPortalBackURL);

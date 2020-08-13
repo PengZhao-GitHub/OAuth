@@ -50,7 +50,7 @@ passport.use(
         (accessToken, refreshToken, profile, done) => {
             // passport callback funciton 
 
-            console.log(profile);
+            console.log('Google Strategy', profile);
 
             // Check if user already exists
             User.findOne({ thirdpartyid: 'google-' + profile.id }).then((currentUser) => {
@@ -91,7 +91,7 @@ passport.use(
             // be associated with a user record in the application's database, which
             // allows for account linking and authentication with other identity
             // providers.
-            console.log("facebook strategy:", profile);
+            console.log("facebook:", profile);
 
             User.findOne({ thirdpartyid: 'facebook-' + profile.id }).then((currentUser) => {
                 if (currentUser) {
