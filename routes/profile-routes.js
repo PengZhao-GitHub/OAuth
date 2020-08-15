@@ -25,7 +25,7 @@ router.get('/', authCheck, (req, res) => {
 // Version#2 API
 // Get customer profile by mongoDB ID , add authenticated check!!!
 router.get('/:id', (req, res) => {
-    console.log(req.isAuthenticated());
+    console.log('Call API: /profile/:id  --> isAuthenticated?', req.isAuthenticated());
     if (req.isAuthenticated()) {
         User.findById(req.params.id).then((user) => {
             console.log('get user profile:', user);
@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
         });
     } else {
         //res.redirect('/auth/login-index');
-        res.send(403); //Forbidden
+        res.sendStatus(403); //Forbidden
     }
 });
 

@@ -19,7 +19,7 @@ router.get('/logout', (req, res) => {
     
     req.logout();
     //res.redirect('/');
-    console.log('redirectURL', CustomerPortalBackURL);
+    console.log('Logout: redirectURL', CustomerPortalBackURL);
     res.redirect(CustomerPortalBackURL);
     
 });
