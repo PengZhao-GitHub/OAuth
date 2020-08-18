@@ -1,8 +1,13 @@
 //************************************** */
+// Step #2 configure third party authentication strategy
+//************************************** */
+
+//************************************** */
 // Passport strategies:
 // - Google
 // - Facebook
 // - Twitter
+// - Linkedin
 // - Local strategy
 //************************************** */
 
@@ -13,6 +18,8 @@ const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
 const TwitterStrategy = require('passport-twitter');
 const localStrategy = require('passport-local').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+const LineStrategy = require('passport-line-auth');
 
 const bcrypt = require('bcryptjs');
 
@@ -32,9 +39,7 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-//************************************** */
-// Step #2 configure third party authentication strategy
-//************************************** */
+
 
 // Google strategy
 //------------------
@@ -145,6 +150,86 @@ passport.use(
                 }
             });
         })
+);
+
+//Linkedin strategy
+//-------------------
+
+passport.use(
+    new LinkedInStrategy(
+        {
+            clientID: keys.linkedin.clientID,
+            clientSecret: keys.linkedin.clientSecret,
+            callbackURL: "/auth/linkedin/redirect",
+            //scope: ['r_emailaddress', 'r_basicprofile'],
+            state: true
+        },
+        function (accessToken, refreshToken, profile, done) {
+
+            console.log("Linkedin strategy:", profile);
+
+            // asynchronous verification, for effect...
+            process.nextTick(function () {
+                // To keep the example simple, the user's LinkedIn profile is returned to
+                // represent the logged-in user. In a typical application, you would want
+                // to associate the LinkedIn account with a user record in your database,
+                // and return that user instead.
+
+                User.findOne({ thirdpartyid: 'linkedin-' + profile.id }).then((currentUser) => {
+                    if (currentUser) {
+                        // already have the user
+                        console.log('user is realdy in DB', currentUser);
+                        done(null, currentUser); // trigger the serializeUser call to create cookie
+                    } else {
+                        new User({
+                            username: profile.displayName,
+                            thirdpartyid: 'linkedin-' + profile.id,
+                            thumbnail: profile.photos[0].value
+                        }).save()
+                            .then((newUser) => {
+                                console.log('new user created:' + newUser);
+                                done(null, newUser)
+                            });
+                    }
+                });
+                //return done(null, profile);
+            });
+        })
+);
+
+
+// LINE strategy
+//------------------
+passport.use(new LineStrategy(
+    {
+        channelID: keys.line.clientID,
+        channelSecret: keys.line.clientSecret,
+        callbackURL: "/auth/line/redirect",
+        scope: ['profile', 'openid'],
+        botPrompt: 'normal'
+    },
+    function (accessToken, refreshToken, profile, done) {
+        console.log("Line strategy:", profile);
+
+        User.findOne({ thirdpartyid: 'line-' + profile.id }).then((currentUser) => {
+            if (currentUser) {
+                // already have the user
+                console.log('user is realdy in DB', currentUser);
+                done(null, currentUser); // trigger the serializeUser call to create cookie
+            } else {
+                new User({
+                    username: profile.displayName,
+                    thirdpartyid: 'line-' + profile.id,
+                    thumbnail: profile.pictureUrl
+                }).save()
+                    .then((newUser) => {
+                        console.log('new user created:' + newUser);
+                        done(null, newUser)
+                    });
+            }
+        });
+
+    })
 );
 
 

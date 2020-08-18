@@ -61,5 +61,23 @@ router.get('/twitter/redirect', passport.authenticate('twitter'), (req, res) => 
     res.redirect(CustomerPortalBackURL + req.user.id);
 });
 
+// Linkedin 
+//--------------------------------------------------
+router.get('/linkedin', passport.authenticate('linkedin'));
+
+router.get('/linkedin/redirect', passport.authenticate('linkedin'), (req, res) => {
+    console.log('/linkedin/redirect:', req.user);
+    res.redirect(CustomerPortalBackURL + req.user.id);
+});
+
+// LINE /auth/line/redirect
+router.get('/line', passport.authenticate('line'));
+
+router.get('/line/redirect', passport.authenticate('line'), (req, res) => {
+    console.log('/line/redirect:', req.user);
+    res.redirect(CustomerPortalBackURL + req.user.id);
+});
+
+
 module.exports = router;
 

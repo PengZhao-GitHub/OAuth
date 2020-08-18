@@ -6,6 +6,8 @@ npm i cookie-session
 npm install passport-facebook
 npm install passport-twitter
 
+npm install passport-linkedin-oauth2
+
 npm install connect-flash
 npm i bcryptjs
 
