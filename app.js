@@ -18,6 +18,8 @@ const cors = require('cors');
 
 const app = express();
 
+
+
 //https://stackoverflow.com/questions/56328474/origin-http-localhost4200-has-been-blocked-by-cors-policy-in-angular7
 app.use(cors());
 
