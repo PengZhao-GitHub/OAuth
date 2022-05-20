@@ -13,7 +13,7 @@ if(process.argv[2]=='develop'){
 module.exports = {
     log_in_out_callBackUrl: {
         DevMode: '/profile/',
-        ServiceMode: 'http://localhost:4200/profile/'
+        ServiceMode: 'http://insurance-customer-portal.s3-website-ap-northeast-1.amazonaws.com/profile/'
     },
     DevMode: devFlag  //control the call back URL
 };
