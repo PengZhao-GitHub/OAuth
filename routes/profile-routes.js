@@ -32,7 +32,7 @@ router.get('/:id', (req, res) => {
             // The two lines are the magic to handle the error
             //Access to XMLHttpRequest at 'http://localhost:3000/profile/5f328d389c25320399580f35' from origin 'http://localhost:4200' has been blocked by CORS policy: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
             //Good article: http://50linesofco.de/post/2017-03-06-cors-a-guided-tour
-            res.set('Access-Control-Allow-Credentials', 'true')
+            res.set('Access-Control-Allow-Credentials', '*')
             res.set('Access-Control-Allow-Origin', req.headers.origin)
             //Set the response headers to solve the CORS issues
             res.json(user);
