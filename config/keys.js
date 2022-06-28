@@ -1,8 +1,8 @@
 // add this file to .gitignore
 // Step to configure the third party login
-// https://developers.facebook.com/   tarou
-// https://console.developers.google.com/  hanako
-// https://account.mongodb.com/account/login?signedOut=true  tarou.hoken
+// https://developers.facebook.com/   ta
+// https://console.developers.google.com/  ha
+// https://account.mongodb.com/account/login?signedOut=true  ta
 //************************************** */
 // Step #1 get third party access keys
 //************************************** */
